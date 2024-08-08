@@ -1,10 +1,10 @@
 package com.example.dailystretch.presentation.view.screens
 
-import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -12,11 +12,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dailystretch.presentation.ui.DailyStretchTheme
 import com.example.dailystretch.presentation.view.composables.DailyStretchAppBar
 import com.example.dailystretch.presentation.view.composables.DailyStretchScaffold
+import com.example.dailystretch.presentation.viewmodel.HomeViewModel
 import com.example.dailystretch.utils.NavigationRoutes
 
 @Composable
@@ -26,6 +28,10 @@ fun HomeScreen(navController: NavHostController) {
             DailyStretchAppBar(
                 title = "Select Routine",
                 actions = {
+                    IconButton(onClick = { navController.navigate(NavigationRoutes.ADD_ROUTINE) }) {
+                        Icon(imageVector = Icons.Filled.Add, contentDescription = "Add Routine")
+                    }
+
                     IconButton(onClick = { navController.navigate(NavigationRoutes.SETTINGS) }) {
                         Icon(imageVector = Icons.Filled.Settings, contentDescription = "Settings")
                     }
@@ -38,8 +44,10 @@ fun HomeScreen(navController: NavHostController) {
 }
 
 @Composable
-fun HomeScreenContent(paddingValues: PaddingValues) {
-    Log.d("TESTING", "$paddingValues")
+fun HomeScreenContent(
+    paddingValues: PaddingValues,
+    viewModel: HomeViewModel = hiltViewModel()
+) {
     Column(Modifier.padding(paddingValues)) {
         Text("Home Screen")
     }
