@@ -1,7 +1,6 @@
 package com.example.dailystretch.presentation.view.screens
 
-import androidx.activity.compose.BackHandler
-import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -32,13 +31,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.dailystretch.domain.model.ExerciseUiModel
 import com.example.dailystretch.domain.model.RoutineUiModel
 import com.example.dailystretch.domain.model.RoutineWithExercisesUiModel
 import com.example.dailystretch.presentation.ui.DailyStretchTheme
@@ -58,8 +57,6 @@ fun HomeScreen(
     val routineList by viewModel.routineList.collectAsState()
     val routineWithExercise by viewModel.routineWithExercise.collectAsState()
 
-    val backPressHandler = LocalOnBackPressedDispatcherOwner.current?.onBackPressedDispatcher
-
     var showCard by remember { mutableStateOf(false) }
 
     val detailsClicked: (Long) -> Unit = { routineId ->
@@ -73,14 +70,6 @@ fun HomeScreen(
 
     val navigateEvent: (String) -> Unit = { route ->
         navController.navigate(route)
-    }
-
-    BackHandler {
-        if (showCard) {
-            showCard = false
-        } else {
-            backPressHandler?.onBackPressed()
-        }
     }
 
     Box(Modifier.fillMaxSize()) {
@@ -137,7 +126,7 @@ fun HomeScreenContent(
                             modifier = Modifier.padding(16.dp),
                             verticalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            Text(text = routine.name, fontSize = 18.sp)
+                            Text(text = routine.name, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                             Text(text = "Time: ${routine.minutesAndSeconds}")
                         }
                     },
@@ -199,7 +188,9 @@ fun DetailsCard(
                 }
 
                 Column(
-                    modifier = Modifier.padding(16.dp).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Spacer(modifier = Modifier.padding(8.dp))
@@ -216,8 +207,33 @@ fun DetailsCard(
                         fontWeight = FontWeight.Bold
                     )
                     // list view with exercise names description
+                    Spacer(modifier = Modifier.padding(24.dp))
 
+                    val exerciseString = if (routineWithExercise.exercises.size < 2)  {
+                        "exercise"
+                    } else {
+                        "exercises"
+                    }
 
+                    Text("${routineWithExercise.numberOfExercises} $exerciseString")
+                    Spacer(modifier = Modifier.padding(8.dp))
+
+                    LazyColumn {
+                        items(routineWithExercise.exercises) { exercise ->
+                            Card(
+                                modifier = Modifier.fillParentMaxWidth(),
+                                border = BorderStroke(1.dp, color = Color.LightGray)) {
+                                Row(
+                                    modifier = Modifier.fillParentMaxWidth().padding(8.dp),
+                                    horizontalArrangement = Arrangement.SpaceBetween
+                                ){
+                                    Text(exercise.exerciseName)
+                                    Text(exercise.durationTime)
+                                }
+                            }
+                            Spacer(modifier = Modifier.padding(8.dp))
+                        }
+                    }
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -251,6 +267,7 @@ fun HomeScreenPreview() {
             paddingValues = PaddingValues(),
             listOf(RoutineUiModel(0L, "Workout 1", "3:55")),
             {},
-            {})
+            {}
+        )
     }
 }

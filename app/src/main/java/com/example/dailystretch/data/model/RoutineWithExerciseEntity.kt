@@ -18,7 +18,8 @@ fun RoutineWithExercisesEntity.toRoutineWithExercisesUiModel(): RoutineWithExerc
     return RoutineWithExercisesUiModel(
         routineName = this.routine.name,
         routineTime = this.routine.time.toInt().toMinutesAndSecondsString(),
-        exercises = exercises.map { it. toExerciseUiModel() }
+        numberOfExercises = this.exercises.size.toString(),
+        exercises = exercises.map { it.toExerciseUiModel() }
     )
 }
 

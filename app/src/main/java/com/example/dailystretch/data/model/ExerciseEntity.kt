@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.dailystretch.domain.model.ExerciseUiModel
+import com.example.dailystretch.utils.toMinutesAndSecondsString
 
 @Entity(
     tableName = EXERCISE_TABLE,
@@ -38,6 +39,6 @@ fun ExerciseEntity.toExerciseUiModel(): ExerciseUiModel {
         items = this.items,
         prepTime = this.prepTime,
         restTime = this.restTime,
-        durationTime = this.durationTime
+        durationTime = this.durationTime.toInt().toMinutesAndSecondsString()
     )
 }
