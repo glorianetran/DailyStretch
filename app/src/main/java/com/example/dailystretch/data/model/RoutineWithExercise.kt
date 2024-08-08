@@ -6,9 +6,8 @@ import androidx.room.Relation
 data class RoutineWithExercises(
     @Embedded val routine: RoutineEntity,
     @Relation(
-        entity = ExerciseEntity::class,
-        parentColumn = "id",
-        entityColumn = "routineId"
+        parentColumn = "routineId",
+        entityColumn = "parentRoutineId"
     )
     val exercises: List<ExerciseEntity>
 )

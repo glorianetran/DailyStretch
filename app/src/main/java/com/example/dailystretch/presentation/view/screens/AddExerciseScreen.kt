@@ -75,6 +75,8 @@ fun AddExerciseContent(
     var items by remember { mutableStateOf("") }
     var prepTime by remember { mutableStateOf("") }
     var restTime by remember { mutableStateOf("") }
+    var durationTime by remember { mutableStateOf("") }
+
 
     LaunchedEffect(isAddClicked) {
         if (isAddClicked) {
@@ -83,7 +85,8 @@ fun AddExerciseContent(
                 exerciseDesc = exerciseDesc,
                 items = items,
                 prepTime = prepTime,
-                restTime = restTime
+                restTime = restTime,
+                durationTime = durationTime
             )
             isAddClickedHandled.invoke(exerciseUiModel)
         }
@@ -119,11 +122,19 @@ fun AddExerciseContent(
             modifier = Modifier.fillMaxWidth()
         )
 
+        OutlinedTextField(
+            value = durationTime,
+            onValueChange = { newText -> durationTime = newText },
+            label = { Text("Duration Time") },
+            placeholder = { Text(text = "Duration Time") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
         Row {
             OutlinedTextField(
                 value = prepTime,
                 onValueChange = { newText -> prepTime = newText },
-                label = { Text("Prep time") },
+                label = { Text("Prep Time") },
                 placeholder = { Text(text = "Prep Time") },
                 modifier = Modifier
                     .fillMaxWidth()

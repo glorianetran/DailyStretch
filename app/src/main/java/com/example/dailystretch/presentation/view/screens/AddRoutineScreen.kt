@@ -26,6 +26,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,10 +44,20 @@ fun AddRoutineScreen(
     navController: NavHostController,
     viewModel: AddRoutineViewModel
 ) {
+    val exerciseList by viewModel.exerciseUiModelList.collectAsState()
+    var routineNameText by rememberSaveable { mutableStateOf("") }
+
     val removeItem: (ExerciseUiModel) -> Unit = { exercise ->
         viewModel.removeItem(exercise)
     }
-    val exerciseList by viewModel.exerciseUiModelList.collectAsState()
+
+    val onRoutineNameTextChange: (String) -> Unit = { newText ->
+        routineNameText = newText
+    }
+
+    val addRoutine: (String, List<ExerciseUiModel>) -> Unit = { routineName, exercises ->
+        viewModel.addRoutine(routineName, exercises)
+    }
 
     DailyStretchScaffold(
         topBar = {
@@ -58,7 +69,10 @@ fun AddRoutineScreen(
                 },
                 navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 actions = {
-                    IconButton(onClick = { viewModel }) {
+                    IconButton(onClick = {
+                        addRoutine.invoke(routineNameText, exerciseList)
+                        navController.navigateUp()
+                    }) {
                         Icon(imageVector = Icons.Filled.Done, contentDescription = "Add routine")
                     }
                 }
@@ -71,7 +85,7 @@ fun AddRoutineScreen(
             }
         }
     ) { paddingValues ->
-        AddRoutineContent(paddingValues, exerciseList, removeItem)
+        AddRoutineContent(paddingValues, exerciseList, routineNameText, onRoutineNameTextChange, removeItem)
     }
 
     BackHandler {
@@ -84,10 +98,10 @@ fun AddRoutineScreen(
 fun AddRoutineContent(
     paddingValues: PaddingValues,
     exerciseUiModelList: List<ExerciseUiModel>,
+    routineNameText: String,
+    onRoutineNameTextChange: (String) -> Unit,
     removeItem: (ExerciseUiModel) -> Unit
 ) {
-    var routineNameText by remember { mutableStateOf("") }
-
     Column(
         Modifier
             .padding(paddingValues)
@@ -97,7 +111,7 @@ fun AddRoutineContent(
         Spacer(modifier = Modifier.padding(8.dp))
         OutlinedTextField(
             value = routineNameText,
-            onValueChange = { newText -> routineNameText = newText },
+            onValueChange = { newText -> onRoutineNameTextChange(newText) },
             label = { Text("Routine name") },
             placeholder = { Text(text = "Enter routine name") },
             modifier = Modifier.fillMaxWidth()
@@ -132,6 +146,7 @@ fun ExerciseCardView(exerciseUiModel: ExerciseUiModel, deleteClicked: () -> Unit
                 if (!exerciseUiModel.items.isNullOrEmpty()) {
                     Text(text = "Items: ${exerciseUiModel.items}")
                 }
+                Text(text = "Duration time: ${exerciseUiModel.durationTime}")
                 Text(text = "Prep time: ${exerciseUiModel.prepTime}")
                 Text(text = "Rest time: ${exerciseUiModel.restTime}")
             }
@@ -148,10 +163,12 @@ fun ExerciseCardView(exerciseUiModel: ExerciseUiModel, deleteClicked: () -> Unit
 @Preview(showBackground = true)
 @Composable
 fun AddRoutineScreenPreview() {
-    val exerciseUiModel = ExerciseUiModel("0", "Leg stretch", null, "Block", "10", "10")
+    val exerciseUiModel = ExerciseUiModel("0", "Leg stretch", null, "Block", "10", "10", "4000")
     AddRoutineContent(
         PaddingValues(),
         listOf(exerciseUiModel),
+        "routine",
+        {},
         {}
     )
 }

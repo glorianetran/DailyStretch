@@ -1,17 +1,20 @@
 package com.example.dailystretch.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.dailystretch.data.repository.RoutineRepository
 import com.example.dailystretch.domain.model.ExerciseUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class AddRoutineViewModel @Inject constructor(
-    private val routineRepository: RoutineRepository
+    private val routineRepository: RoutineRepository,
+
 ): ViewModel() {
     private val _exerciseUiModelList = MutableStateFlow<List<ExerciseUiModel>>(emptyList())
     val exerciseUiModelList: StateFlow<List<ExerciseUiModel>> = _exerciseUiModelList
@@ -35,6 +38,8 @@ class AddRoutineViewModel @Inject constructor(
         routineName: String,
         exerciseUiModelList: List<ExerciseUiModel>
     ) {
-//        routineRepository.addRoutine(routineName, exerciseUiModelList)
+        viewModelScope.launch {
+            routineRepository.addRoutine(routineName, exerciseUiModelList)
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.dailystretch.di
 
+import com.example.dailystretch.data.dao.RoutineDao
 import com.example.dailystretch.data.repository.RoutineRepository
 import com.example.dailystretch.data.repository.RoutineRepositoryImpl
 import dagger.Module
@@ -15,7 +16,8 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providesRoutineRepository(
+        routineDao: RoutineDao
     ): RoutineRepository {
-        return RoutineRepositoryImpl()
+        return RoutineRepositoryImpl(routineDao)
     }
 }
