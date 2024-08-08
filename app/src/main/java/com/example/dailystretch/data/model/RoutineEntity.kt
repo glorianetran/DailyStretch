@@ -19,6 +19,7 @@ const val ROUTINE_TABLE = "routines"
 
 fun RoutineEntity.toRoutineUiModel(): RoutineUiModel {
     return RoutineUiModel(
+        id = this.routineId,
         name = this.name,
         minutesAndSeconds = this.time.toInt().toMinutesAndSecondsString()
     )

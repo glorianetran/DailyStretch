@@ -9,12 +9,14 @@ import com.example.dailystretch.presentation.view.screens.AddExerciseScreen
 import com.example.dailystretch.presentation.view.screens.AddRoutineScreen
 import com.example.dailystretch.presentation.view.screens.HomeScreen
 import com.example.dailystretch.presentation.view.screens.SettingsScreen
+import com.example.dailystretch.presentation.view.screens.WorkoutScreen
 import com.example.dailystretch.presentation.viewmodel.AddRoutineViewModel
 import com.example.dailystretch.presentation.viewmodel.GetRoutineViewModel
 import com.example.dailystretch.utils.NavigationRoutes.ADD_ROUTINE
 import com.example.dailystretch.utils.NavigationRoutes.ADD_EXERCISE
 import com.example.dailystretch.utils.NavigationRoutes.HOME
 import com.example.dailystretch.utils.NavigationRoutes.SETTINGS
+import com.example.dailystretch.utils.NavigationRoutes.WORKOUT
 
 @Composable
 fun DailyStretchApp() {
@@ -27,5 +29,6 @@ fun DailyStretchApp() {
         composable(ADD_ROUTINE) { AddRoutineScreen(navController, addRoutineViewModel) }
         composable(SETTINGS) { SettingsScreen(navController) }
         composable(ADD_EXERCISE) { AddExerciseScreen(navController, addRoutineViewModel) }
+        composable(WORKOUT) { WorkoutScreen(navController) }
     }
 }

@@ -5,4 +5,6 @@ object NavigationRoutes {
     const val ADD_EXERCISE = "add_exercise"
     const val ADD_ROUTINE = "add_routine"
     const val SETTINGS = "settings"
+    const val DETAIL = "details"
+    const val WORKOUT = "workout"
 }

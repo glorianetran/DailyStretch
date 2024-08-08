@@ -3,6 +3,7 @@ package com.example.dailystretch.data.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.dailystretch.domain.model.ExerciseUiModel
 
 @Entity(
     tableName = EXERCISE_TABLE,
@@ -28,3 +29,15 @@ data class ExerciseEntity(
 )
 
 const val EXERCISE_TABLE = "exercises"
+
+fun ExerciseEntity.toExerciseUiModel(): ExerciseUiModel {
+    return ExerciseUiModel(
+        id = exerciseId.toString(),
+        exerciseDesc = this.description,
+        exerciseName = this.name,
+        items = this.items,
+        prepTime = this.prepTime,
+        restTime = this.restTime,
+        durationTime = this.durationTime
+    )
+}

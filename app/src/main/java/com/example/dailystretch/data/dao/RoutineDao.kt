@@ -6,7 +6,7 @@ import androidx.room.Query
 import androidx.room.Transaction
 import com.example.dailystretch.data.model.ExerciseEntity
 import com.example.dailystretch.data.model.RoutineEntity
-import com.example.dailystretch.data.model.RoutineWithExercises
+import com.example.dailystretch.data.model.RoutineWithExercisesEntity
 
 
 @Dao
@@ -22,5 +22,5 @@ interface RoutineDao {
 
     @Transaction
     @Query("SELECT * FROM routines WHERE routineId = :id")
-    suspend fun getRoutineWithExercises(id: Long): RoutineWithExercises
+    suspend fun getRoutineWithExercises(id: Long): RoutineWithExercisesEntity
 }

@@ -2,8 +2,10 @@ package com.example.dailystretch.data.repository
 
 import com.example.dailystretch.data.dao.RoutineDao
 import com.example.dailystretch.data.model.RoutineEntity
-import com.example.dailystretch.data.model.RoutineWithExercises
+import com.example.dailystretch.data.model.RoutineWithExercisesEntity
+import com.example.dailystretch.data.model.toRoutineWithExercisesUiModel
 import com.example.dailystretch.domain.model.ExerciseUiModel
+import com.example.dailystretch.domain.model.RoutineWithExercisesUiModel
 import com.example.dailystretch.domain.model.toExerciseEntity
 import javax.inject.Inject
 
@@ -30,5 +32,10 @@ class RoutineRepositoryImpl @Inject constructor(
 
     override suspend fun getAllRoutines(): List<RoutineEntity> {
         return dao.getAllRoutines()
+    }
+
+    override suspend fun getRoutineWithExercises(id: Long): RoutineWithExercisesUiModel {
+        val routineWithExercises = dao.getRoutineWithExercises(id)
+        return routineWithExercises.toRoutineWithExercisesUiModel()
     }
 }
