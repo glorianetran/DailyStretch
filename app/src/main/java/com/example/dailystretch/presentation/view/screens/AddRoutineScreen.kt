@@ -32,7 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.dailystretch.domain.model.Exercise
+import com.example.dailystretch.domain.model.ExerciseUiModel
 import com.example.dailystretch.presentation.view.composables.DailyStretchAppBar
 import com.example.dailystretch.presentation.view.composables.DailyStretchScaffold
 import com.example.dailystretch.presentation.viewmodel.AddRoutineViewModel
@@ -43,10 +43,10 @@ fun AddRoutineScreen(
     navController: NavHostController,
     viewModel: AddRoutineViewModel
 ) {
-    val removeItem: (Exercise) -> Unit = { exercise ->
+    val removeItem: (ExerciseUiModel) -> Unit = { exercise ->
         viewModel.removeItem(exercise)
     }
-    val exerciseList by viewModel.exerciseList.collectAsState()
+    val exerciseList by viewModel.exerciseUiModelList.collectAsState()
 
     DailyStretchScaffold(
         topBar = {
@@ -58,7 +58,7 @@ fun AddRoutineScreen(
                 },
                 navigationIcon = Icons.AutoMirrored.Filled.ArrowBack,
                 actions = {
-                    IconButton(onClick = { /* Add call to add routine to db*/ }) {
+                    IconButton(onClick = { viewModel }) {
                         Icon(imageVector = Icons.Filled.Done, contentDescription = "Add routine")
                     }
                 }
@@ -83,8 +83,8 @@ fun AddRoutineScreen(
 @Composable
 fun AddRoutineContent(
     paddingValues: PaddingValues,
-    exerciseList: List<Exercise>,
-    removeItem: (Exercise) -> Unit
+    exerciseUiModelList: List<ExerciseUiModel>,
+    removeItem: (ExerciseUiModel) -> Unit
 ) {
     var routineNameText by remember { mutableStateOf("") }
 
@@ -107,7 +107,7 @@ fun AddRoutineContent(
         Spacer(modifier = Modifier.padding(16.dp))
 
         LazyColumn {
-            items(exerciseList) { exercise ->
+            items(exerciseUiModelList) { exercise ->
                 ExerciseCardView(exercise) {
                     removeItem.invoke(exercise)
                 }
@@ -117,7 +117,7 @@ fun AddRoutineContent(
 }
 
 @Composable
-fun ExerciseCardView(exercise: Exercise, deleteClicked: () -> Unit) {
+fun ExerciseCardView(exerciseUiModel: ExerciseUiModel, deleteClicked: () -> Unit) {
     Card {
         Row (horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
@@ -125,15 +125,15 @@ fun ExerciseCardView(exercise: Exercise, deleteClicked: () -> Unit) {
                 .padding(8.dp)
         ){
             Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                Text(text = exercise.exerciseName)
-                if (!exercise.exerciseDesc.isNullOrEmpty()) {
-                    Text(text = exercise.exerciseDesc)
+                Text(text = exerciseUiModel.exerciseName)
+                if (!exerciseUiModel.exerciseDesc.isNullOrEmpty()) {
+                    Text(text = exerciseUiModel.exerciseDesc)
                 }
-                if (!exercise.items.isNullOrEmpty()) {
-                    Text(text = "Items: ${exercise.items}")
+                if (!exerciseUiModel.items.isNullOrEmpty()) {
+                    Text(text = "Items: ${exerciseUiModel.items}")
                 }
-                Text(text = "Prep time: ${exercise.prepTime}")
-                Text(text = "Rest time: ${exercise.restTime}")
+                Text(text = "Prep time: ${exerciseUiModel.prepTime}")
+                Text(text = "Rest time: ${exerciseUiModel.restTime}")
             }
             Column {
                 IconButton(onClick = { deleteClicked.invoke() }) {
@@ -148,10 +148,10 @@ fun ExerciseCardView(exercise: Exercise, deleteClicked: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun AddRoutineScreenPreview() {
-    val exercise = Exercise("0", "Leg stretch", null, "Block", "10", "10")
+    val exerciseUiModel = ExerciseUiModel("0", "Leg stretch", null, "Block", "10", "10")
     AddRoutineContent(
         PaddingValues(),
-        listOf(exercise),
+        listOf(exerciseUiModel),
         {}
     )
 }

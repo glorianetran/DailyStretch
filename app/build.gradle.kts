@@ -55,6 +55,10 @@ android {
     }
 }
 
+hilt {
+    enableAggregatingTask = true
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -77,8 +81,13 @@ dependencies {
     implementation(libs.navigation.ui.ktx)
     implementation(libs.navigation.compose)
 
+    // room
+    implementation(libs.androidx.room.runtime.v261)
+    kapt(libs.androidx.room.compiler)
+
     // hilt
-    implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
+    implementation(libs.hilt.android.v252)
+    kapt(libs.hilt.compiler.v252)
+
+    implementation(libs.androidx.hilt.navigation.compose.v120)
 }

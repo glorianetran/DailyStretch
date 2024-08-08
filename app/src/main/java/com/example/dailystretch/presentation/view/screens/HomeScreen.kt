@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.dailystretch.presentation.ui.DailyStretchTheme
@@ -45,8 +44,7 @@ fun HomeScreen(navController: NavHostController) {
 
 @Composable
 fun HomeScreenContent(
-    paddingValues: PaddingValues,
-    viewModel: HomeViewModel = hiltViewModel()
+    paddingValues: PaddingValues
 ) {
     Column(Modifier.padding(paddingValues)) {
         Text("Home Screen")

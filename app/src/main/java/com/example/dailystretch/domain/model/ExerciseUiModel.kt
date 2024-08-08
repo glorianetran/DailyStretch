@@ -1,6 +1,6 @@
 package com.example.dailystretch.domain.model
 
-data class Exercise(
+data class ExerciseUiModel(
     val id: String? = null,
     val exerciseName: String,
     val exerciseDesc: String?,

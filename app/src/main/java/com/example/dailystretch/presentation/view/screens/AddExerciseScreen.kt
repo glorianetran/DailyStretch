@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.dailystretch.domain.model.Exercise
+import com.example.dailystretch.domain.model.ExerciseUiModel
 import com.example.dailystretch.presentation.view.composables.DailyStretchAppBar
 import com.example.dailystretch.presentation.view.composables.DailyStretchScaffold
 import com.example.dailystretch.presentation.viewmodel.AddRoutineViewModel
@@ -68,7 +68,7 @@ fun AddExerciseScreen(
 fun AddExerciseContent(
     paddingValues: PaddingValues,
     isAddClicked: Boolean,
-    isAddClickedHandled: (Exercise) -> Unit
+    isAddClickedHandled: (ExerciseUiModel) -> Unit
 ) {
     var exerciseName by remember { mutableStateOf("") }
     var exerciseDesc by remember { mutableStateOf("") }
@@ -78,14 +78,14 @@ fun AddExerciseContent(
 
     LaunchedEffect(isAddClicked) {
         if (isAddClicked) {
-            val exercise = Exercise(
+            val exerciseUiModel = ExerciseUiModel(
                 exerciseName = exerciseName,
                 exerciseDesc = exerciseDesc,
                 items = items,
                 prepTime = prepTime,
                 restTime = restTime
             )
-            isAddClickedHandled.invoke(exercise)
+            isAddClickedHandled.invoke(exerciseUiModel)
         }
     }
 

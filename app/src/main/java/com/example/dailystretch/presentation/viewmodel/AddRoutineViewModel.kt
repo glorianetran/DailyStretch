@@ -1,7 +1,8 @@
 package com.example.dailystretch.presentation.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.example.dailystretch.domain.model.Exercise
+import com.example.dailystretch.data.repository.RoutineRepository
+import com.example.dailystretch.domain.model.ExerciseUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -9,22 +10,31 @@ import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class AddRoutineViewModel @Inject constructor(): ViewModel() {
-    private val _exerciseList = MutableStateFlow<List<Exercise>>(emptyList())
-    val exerciseList: StateFlow<List<Exercise>> = _exerciseList
+class AddRoutineViewModel @Inject constructor(
+    private val routineRepository: RoutineRepository
+): ViewModel() {
+    private val _exerciseUiModelList = MutableStateFlow<List<ExerciseUiModel>>(emptyList())
+    val exerciseUiModelList: StateFlow<List<ExerciseUiModel>> = _exerciseUiModelList
 
-    fun addExercise(exercise: Exercise) {
-        val exerciseWithId = exercise.copy(id = UUID.randomUUID().toString())
-        _exerciseList.value += exerciseWithId
-        println("Items updated: ${_exerciseList.value}")
+    fun addExercise(exerciseUiModel: ExerciseUiModel) {
+        val exerciseWithId = exerciseUiModel.copy(id = UUID.randomUUID().toString())
+        _exerciseUiModelList.value += exerciseWithId
+        println("Items updated: ${_exerciseUiModelList.value}")
     }
 
-    fun removeItem(exercise: Exercise) {
-        _exerciseList.value = _exerciseList.value.filterNot { it.id == exercise.id }
-        println("Items updated: ${_exerciseList.value}")
+    fun removeItem(exerciseUiModel: ExerciseUiModel) {
+        _exerciseUiModelList.value = _exerciseUiModelList.value.filterNot { it.id == exerciseUiModel.id }
+        println("Items updated: ${_exerciseUiModelList.value}")
     }
 
     fun clearList() {
-        _exerciseList.value = emptyList()
+        _exerciseUiModelList.value = emptyList()
+    }
+
+    fun addRoutine(
+        routineName: String,
+        exerciseUiModelList: List<ExerciseUiModel>
+    ) {
+//        routineRepository.addRoutine(routineName, exerciseUiModelList)
     }
 }
