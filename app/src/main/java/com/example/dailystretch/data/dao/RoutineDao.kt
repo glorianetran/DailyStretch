@@ -23,4 +23,7 @@ interface RoutineDao {
     @Transaction
     @Query("SELECT * FROM routines WHERE routineId = :id")
     suspend fun getRoutineWithExercises(id: Long): RoutineWithExercisesEntity
+
+    @Query("DELETE FROM routines WHERE routineId = :id")
+    suspend fun deleteRoutineById(id: Long)
 }

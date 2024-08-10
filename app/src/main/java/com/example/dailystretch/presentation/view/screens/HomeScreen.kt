@@ -45,13 +45,13 @@ import com.example.dailystretch.presentation.view.composables.CardFace
 import com.example.dailystretch.presentation.view.composables.DailyStretchAppBar
 import com.example.dailystretch.presentation.view.composables.DailyStretchFlipCard
 import com.example.dailystretch.presentation.view.composables.DailyStretchScaffold
-import com.example.dailystretch.presentation.viewmodel.GetRoutineViewModel
+import com.example.dailystretch.presentation.viewmodel.HomeRoutineViewModel
 import com.example.dailystretch.utils.NavigationRoutes
 
 @Composable
 fun HomeScreen(
     navController: NavHostController,
-    viewModel: GetRoutineViewModel
+    viewModel: HomeRoutineViewModel
 ) {
     viewModel.getAllRoutines()
     val routineList by viewModel.routineList.collectAsState()
@@ -70,6 +70,11 @@ fun HomeScreen(
 
     val navigateEvent: (String) -> Unit = { route ->
         navController.navigate(route)
+    }
+
+    val deleteClicked: (Long) -> Unit = { routineId ->
+        viewModel.deleteRoutine(routineId)
+        showCard = false
     }
 
     Box(Modifier.fillMaxSize()) {
@@ -99,7 +104,8 @@ fun HomeScreen(
             DetailsCard(
                 dismissClicked,
                 navigateEvent,
-                routineWithExercise
+                deleteClicked,
+                routineWithExercise,
             )
         }
     }
@@ -158,6 +164,7 @@ fun HomeScreenContent(
 fun DetailsCard(
     closeCardAction: () -> Unit,
     startWorkoutClicked: (String) -> Unit,
+    deleteClicked: (Long) -> Unit,
     routineWithExercise: RoutineWithExercisesUiModel
 ) {
     Box(Modifier.padding(PaddingValues(16.dp, 32.dp, 16.dp, 32.dp))) {
@@ -182,7 +189,7 @@ fun DetailsCard(
                     IconButton(onClick = { closeCardAction() }) {
                         Icon(
                             imageVector = Icons.Filled.Close,
-                            contentDescription = "Delete Routine"
+                            contentDescription = "Close Details"
                         )
                     }
                 }
@@ -244,7 +251,7 @@ fun DetailsCard(
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Button(onClick = { closeCardAction() }) {
+                    Button(onClick = { deleteClicked.invoke(routineWithExercise.id) }) {
                         Text("Delete")
                     }
                     Button(

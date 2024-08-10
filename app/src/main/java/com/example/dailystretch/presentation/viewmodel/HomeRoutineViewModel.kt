@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class GetRoutineViewModel @Inject constructor(
+class HomeRoutineViewModel @Inject constructor(
     private val routineRepository: RoutineRepository
 ): ViewModel() {
 
@@ -34,6 +34,12 @@ class GetRoutineViewModel @Inject constructor(
         viewModelScope.launch {
             val routineAndExercises = routineRepository.getRoutineWithExercises(id)
             _routineWithExercise.value = routineAndExercises
+        }
+    }
+
+    fun deleteRoutine(id: Long) {
+        viewModelScope.launch {
+            routineRepository.deleteRoutineById(id)
         }
     }
 }

@@ -16,6 +16,7 @@ data class RoutineWithExercisesEntity(
 
 fun RoutineWithExercisesEntity.toRoutineWithExercisesUiModel(): RoutineWithExercisesUiModel {
     return RoutineWithExercisesUiModel(
+        id = this.routine.routineId,
         routineName = this.routine.name,
         routineTime = this.routine.time.toInt().toMinutesAndSecondsString(),
         numberOfExercises = this.exercises.size.toString(),

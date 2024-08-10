@@ -11,7 +11,7 @@ import com.example.dailystretch.presentation.view.screens.HomeScreen
 import com.example.dailystretch.presentation.view.screens.SettingsScreen
 import com.example.dailystretch.presentation.view.screens.WorkoutScreen
 import com.example.dailystretch.presentation.viewmodel.AddRoutineViewModel
-import com.example.dailystretch.presentation.viewmodel.GetRoutineViewModel
+import com.example.dailystretch.presentation.viewmodel.HomeRoutineViewModel
 import com.example.dailystretch.utils.NavigationRoutes.ADD_ROUTINE
 import com.example.dailystretch.utils.NavigationRoutes.ADD_EXERCISE
 import com.example.dailystretch.utils.NavigationRoutes.HOME
@@ -22,10 +22,10 @@ import com.example.dailystretch.utils.NavigationRoutes.WORKOUT
 fun DailyStretchApp() {
     val navController = rememberNavController()
     val addRoutineViewModel: AddRoutineViewModel = hiltViewModel()
-    val getRoutineViewModel: GetRoutineViewModel = hiltViewModel()
+    val homeRoutineViewModel: HomeRoutineViewModel = hiltViewModel()
 
     NavHost(navController = navController, startDestination = HOME) {
-        composable(HOME) { HomeScreen(navController, getRoutineViewModel) }
+        composable(HOME) { HomeScreen(navController, homeRoutineViewModel) }
         composable(ADD_ROUTINE) { AddRoutineScreen(navController, addRoutineViewModel) }
         composable(SETTINGS) { SettingsScreen(navController) }
         composable(ADD_EXERCISE) { AddExerciseScreen(navController, addRoutineViewModel) }

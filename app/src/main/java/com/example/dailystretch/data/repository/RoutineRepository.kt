@@ -11,4 +11,6 @@ interface RoutineRepository {
     suspend fun getAllRoutines(): List<RoutineEntity>
 
     suspend fun getRoutineWithExercises(id: Long): RoutineWithExercisesUiModel
+
+    suspend fun deleteRoutineById(id: Long)
 }

@@ -38,4 +38,8 @@ class RoutineRepositoryImpl @Inject constructor(
         val routineWithExercises = dao.getRoutineWithExercises(id)
         return routineWithExercises.toRoutineWithExercisesUiModel()
     }
+
+    override suspend fun deleteRoutineById(id: Long) {
+        return dao.deleteRoutineById(id)
+    }
 }
